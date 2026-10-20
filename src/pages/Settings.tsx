@@ -2,7 +2,12 @@ import { useState, useEffect } from 'react'
 import Layout from '../components/Layout'
 import { supabase, type Settings } from '../supabaseClient'
 
-export default function Settings() {
+interface SettingsProps {
+  userId: string;
+  onLogout?: () => void;
+}
+
+export default function Settings({ userId, onLogout }: SettingsProps) {
   const [settings, setSettings] = useState<Settings | null>(null)
   const [theme, setTheme] = useState<'light' | 'dark' | 'system'>('light')
   const [accentColor, setAccentColor] = useState('#a78bfa')
