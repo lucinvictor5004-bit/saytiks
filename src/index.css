@@ -1,0 +1,62 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  -webkit-tap-highlight-color: transparent;
+}
+
+body {
+  font-family: system-ui, -apple-system, sans-serif;
+  background: #fafafa;
+  color: #000;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+
+.dark body {
+  background: #111;
+  color: #fff;
+}
+
+/* Убираем дефолтные стили для кнопок и инпутов на мобильных */
+button, input, textarea, select {
+  font-family: inherit;
+  font-size: inherit;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+}
+
+/* Desktop sidebar visible on large screens */
+@media (min-width: 768px) {
+  .desktop-sidebar {
+    display: block !important;
+  }
+  .mobile-nav {
+    display: none !important;
+  }
+}
+
+/* Mobile navigation visible on small screens */
+@media (max-width: 767px) {
+  .desktop-sidebar {
+    display: none !important;
+  }
+  .mobile-nav {
+    display: flex !important;
+  }
+
+  /* Мобильные оптимизации */
+  body {
+    padding-bottom: 0; /* Убираем, так как есть sticky header */
+  }
+
+  /* Touch-friendly кнопки */
+  button {
+    min-height: 44px;
+  }
+
+  input, textarea, select {
+    font-size: 16px; /* Предотвращает zoom на iOS */
+  }
+}
