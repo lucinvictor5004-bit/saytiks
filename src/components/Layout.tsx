@@ -19,7 +19,7 @@ const navItems = [
   { path: '/settings', icon: Settings, label: 'Настройки' },
 ]
 
-export default function Layout({ children, userId, onLogout }: LayoutProps) {
+export default function Layout({ children, userId: _userId, onLogout }: LayoutProps) {
   const location = useLocation()
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
 

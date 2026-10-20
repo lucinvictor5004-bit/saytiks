@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import Layout from '../components/Layout';
 import { supabase } from '../supabaseClient';
-import { format, startOfWeek, addDays, isSameDay } from 'date-fns';
+import { format } from 'date-fns';
 import { ru } from 'date-fns/locale';
 
 interface StudyProps {
@@ -29,7 +29,6 @@ interface ScheduleLesson {
 export default function Study({ userId }: StudyProps) {
   const [homework, setHomework] = useState<Homework[]>([]);
   const [schedule, setSchedule] = useState<ScheduleLesson[]>([]);
-  const [selectedDate, setSelectedDate] = useState(new Date());
   const [showHwModal, setShowHwModal] = useState(false);
   const [showScheduleModal, setShowScheduleModal] = useState(false);
   const [editingLesson, setEditingLesson] = useState<{day: number, lesson: number} | null>(null);

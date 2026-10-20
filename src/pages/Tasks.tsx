@@ -1,8 +1,6 @@
 import { useEffect, useState } from 'react';
 import Layout from '../components/Layout';
 import { supabase } from '../supabaseClient';
-import { format, startOfWeek, addDays } from 'date-fns';
-import { ru } from 'date-fns/locale';
 
 interface TasksProps {
   userId: string;

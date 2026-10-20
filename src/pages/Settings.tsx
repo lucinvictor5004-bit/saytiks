@@ -23,33 +23,21 @@ export default function Settings({ userId, onLogout }: SettingsProps) {
   }, [theme])
 
   const loadSettings = async () => {
-    const { data: { user } } = await supabase.auth.getUser()
-    if (!user) {
-      // Create default settings if no user
-      const defaultSettings = {
-        theme: 'light' as const,
-        accent_color: '#a78bfa',
-        time_format: '24h' as const,
-        notifications_enabled: true
-      }
-      setTheme(defaultSettings.theme)
-      setAccentColor(defaultSettings.accent_color)
-      setTimeFormat(defaultSettings.time_format)
-      setNotificationsEnabled(defaultSettings.notifications_enabled)
-      return
-    }
+    // Используем userId из пропсов вместо Supabase Auth
+    if (!userId) return
 
-    const { data } = await supabase.from('settings').select('*').eq('user_id', user.id).single()
-    if (data) {
-      setSettings(data)
-      setTheme(data.theme)
-      setAccentColor(data.accent_color)
-      setTimeFormat(data.time_format)
-      setNotificationsEnabled(data.notifications_enabled)
+    const { data } = await supabase.from('settings').select('*').eq('user_id', userId).limit(1)
+    if (data && data.length > 0) {
+      const settingsData = data[0]
+      setSettings(settingsData)
+      setTheme(settingsData.theme)
+      setAccentColor(settingsData.accent_color)
+      setTimeFormat(settingsData.time_format)
+      setNotificationsEnabled(settingsData.notifications_enabled)
     } else {
       // Create default settings
       const defaultSettings = {
-        user_id: user.id,
+        user_id: userId,
         theme: 'light' as const,
         accent_color: '#a78bfa',
         time_format: '24h' as const,
@@ -76,11 +64,7 @@ export default function Settings({ userId, onLogout }: SettingsProps) {
   }
 
   const saveSettings = async () => {
-    const { data: { user } } = await supabase.auth.getUser()
-    if (!user) {
-      alert('Для сохранения настроек необходимо войти в систему')
-      return
-    }
+    if (!userId) return
 
     const newSettings = {
       theme,
@@ -92,7 +76,7 @@ export default function Settings({ userId, onLogout }: SettingsProps) {
     if (settings) {
       await supabase.from('settings').update(newSettings).eq('id', settings.id)
     } else {
-      await supabase.from('settings').insert([{ ...newSettings, user_id: user.id }])
+      await supabase.from('settings').insert([{ ...newSettings, user_id: userId }])
     }
 
     alert('Настройки сохранены!')
@@ -100,7 +84,7 @@ export default function Settings({ userId, onLogout }: SettingsProps) {
   }
 
   return (
-    <Layout>
+    <Layout userId={userId} onLogout={onLogout}>
       <div style={{ padding: '2rem', maxWidth: '800px', margin: '0 auto' }}>
         <h1 style={{ fontSize: '2rem', fontWeight: 'bold', marginBottom: '2rem' }}>Настройки</h1>
 
